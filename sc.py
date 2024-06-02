@@ -1,5 +1,9 @@
 import numpy as np
 
+def choices(a_huge_key_list):
+    L = len(a_huge_key_list)
+    i = np.random.randint(0, L)
+    return a_huge_key_list[i]
 
 def get_adjacent_nodes(set_links, link, U_labeled, U_labeled_first_value_array,
                        U_labeled_second_value_array, L_array):
@@ -65,9 +69,9 @@ def get_next_nodes(array_links, array_links_first, array_links_second, ix1, ix2,
             ix1 = np.isin(array_links_first, j)
             ix2 = np.isin(array_links_second, j)
 
-            return j, ix1, ix2
+            return j, ix1, ix2  # Возвращаемся за пределы цикла после завершения всех итераций
         else:
-            return j * -1, ix1, ix2
+            continue  # Продолжаем цикл, если еще остались непосещенные узлы
 
 
 def label_stages(I, L):
@@ -87,7 +91,6 @@ def label_stages(I, L):
     gix1, gix2 = np.zeros(L_first_value_array.size, dtype=bool), np.zeros(L_first_value_array.size, dtype=bool)
 
     while N.size > 0:
-
         x, ix1, ix2 = get_next_nodes(L_array, L_first_value_array, L_second_value_array, ~gix1, ~gix2, N)
 
         gix1 = np.logical_or(gix1, ix1)
@@ -105,3 +108,4 @@ def label_stages(I, L):
             N = np.append(N, x)
 
     return U
+
